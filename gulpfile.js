@@ -7,9 +7,9 @@ var sources = {
         dev: ['./app/**/*.js']
     },
     css: {
-        dev: ['**/*.css']
+        dev: ['**/**/*.css']
     },
-    templates: ['**/*.html']
+    templates: ['**/**/*.html']
 };
 var isWin = /^win/.test(process.platform);
 

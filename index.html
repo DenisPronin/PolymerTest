@@ -10,9 +10,20 @@
     <script src="bower_components/webcomponentsjs/webcomponents.js"></script>
     <link rel="import" href="bower_components/font-roboto/roboto.html">
     <link rel="import" href="bower_components/core-icons/core-icons.html">
+    <link rel="import" href="app/components/header.html">
+    <link rel="import" href="app/components/layout.html">
 
+    <style>
+        html,body {
+            height: 100%;
+            margin: 0;
+            background-color: #fff;
+            font-family: 'RobotoDraft', sans-serif;
+        }
+    </style>
 </head>
-<body unresolved>
-    <core-icon icon="menu"></core-icon>
+<body fullbleed>
+    <app-header></app-header>
+    <app-layout></app-layout>
 </body>
 </html>
