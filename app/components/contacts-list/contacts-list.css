@@ -1,0 +1,15 @@
+:host {
+    height: 100%;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+paper-dropdown-menu {
+    border-bottom: 0;
+}
+
+core-menu {
+    margin: 0;
+}

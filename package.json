@@ -19,5 +19,9 @@
   "bugs": {
     "url": "https://github.com/DenisPronin/PolymerTest/issues"
   },
-  "homepage": "https://github.com/DenisPronin/PolymerTest"
+  "homepage": "https://github.com/DenisPronin/PolymerTest",
+  "devDependencies": {
+    "gulp": "^3.8.10",
+    "gulp-connect": "^2.2.0"
+  }
 }
