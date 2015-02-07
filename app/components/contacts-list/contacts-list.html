@@ -6,8 +6,9 @@
 <link rel="import" href="../../../bower_components/paper-dropdown/paper-dropdown.html">
 <link rel="import" href="../../../bower_components/core-menu/core-menu.html">
 <link rel="import" href="../../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../avatar-icon/avatar-icon.html">
 
-<polymer-element name="contacts-list" drawer>
+<polymer-element name="contacts-list">
     <template>
         <link rel="stylesheet" href="contacts-list.css">
         <core-toolbar>
@@ -27,22 +28,91 @@
             <paper-icon-button icon="search" role="button" tabindex="1" aria-label="search" on-click="{{ showSearch }}"></paper-icon-button>
             <paper-icon-button icon="more-vert" role="button" tabindex="2" aria-label="menu"></paper-icon-button>
         </core-toolbar>
-        <div class="content">
-            <core-menu valueattr="label" id="core_menu" theme="core-light-theme" selected="0" on-core-select="{{ selectContact }}">
-                <template repeat="{{ user in users }}">
-                    <paper-item label="{{ user.name }}" horizontal center layout>{{ user.name }}</paper-item>
-                </template>
-            </core-menu>
+        <div class="content" id="contactsList">
+            <div class="favorite-container contact-group flexbox">
+                <div class="col contact-group-name" horizontal layout>
+                    <core-icon icon="star" class="group-sign" flex></core-icon>
+                </div>
+                <div class="col contact-group-menu">
+                    <ul>
+                        <template repeat="{{ user in groups.favoriteGroup }}">
+                            <li on-click="{{ selectContact }}">
+                                <paper-item label="{{ user.name }}" horizontal center layout>
+                                    <avatar-icon imgSrc="{{ user.avatar }}"></avatar-icon>
+                                    {{ user.name }}
+                                </paper-item>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+            </div>
+            <template repeat="{{ group in groups.all }}">
+                <div class="contact-group flexbox">
+                    <div class="col contact-group-name" horizontal layout>
+                        <span class="group-sign" flex>{{ group.name }}</span>
+                    </div>
+                    <div class="col contact-group-menu">
+                        <ul>
+                            <template repeat="{{ user in group.contacts }}">
+                                <li on-click="{{ selectContact }}">
+                                    <paper-item label="{{ user.name }}" horizontal center layout>
+                                        <avatar-icon imgSrc="{{ user.avatar }}"></avatar-icon>
+                                        {{ user.name }}
+                                    </paper-item>
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
+                </div>
+            </template>
         </div>
     </template>
 
     <script>
         Polymer('contacts-list', {
             users: [],
+            groups: {},
 
             ready: function() {
-                this.users = Users.getUserList();
-                console.log('ready');
+                this.initUsers();
+            },
+
+            initUsers: function() {
+                var users = Users.getUserList();
+                users.sort(function(a, b){
+                    if(a.name < b.name) return -1;
+                    if(a.name > b.name) return 1;
+                    return 0;
+                });
+                this.users = users;
+                this.groups = this.splitUsersByGroup(users);
+                console.log(this.users);
+                console.log(this.groups);
+            },
+
+            splitUsersByGroup: function(users) {
+                var groups = {};
+
+                groups.favoriteGroup = users.filter(function(_user) {
+                    return _user.favorite;
+                });
+
+                groups.all = [];
+                var letterGroups = {};
+                for (var i = 0; i < users.length; i++) {
+                    var user = users[i];
+                    var firstChar = user.name.charAt(0);
+                    letterGroups[firstChar] = letterGroups[firstChar] || [];
+                    letterGroups[firstChar].push(user);
+                }
+                for (var key in letterGroups) {
+                    groups.all.push({
+                        name: key.toUpperCase(),
+                        contacts: letterGroups[key]
+                    })
+                }
+
+                return groups;
             },
 
             showSearch: function() {
@@ -70,13 +140,21 @@
                 }
             },
 
-            selectContact: function(e, contact) {
-                if (contact.isSelected) {
-                    var selectedItem = contact;
+            selectContact: function(e) {
+                var menuList = this.$.contactsList.getElementsByClassName('contact-group-menu');
+                for (var i = 0; i < menuList.length; i++) {
+                    var menu = menuList[i];
+                    var liList = menu.getElementsByTagName('li');
+                    for (var j = 0; j < liList.length; j++) {
+                        var _li = liList[j];
+                        _li.classList.remove('active')
+                    }
                 }
-
+                var li = e.currentTarget;
+                li.classList.add("active");
             }
 
         });
     </script>
 </polymer-element>
+

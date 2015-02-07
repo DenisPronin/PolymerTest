@@ -4,12 +4,15 @@ var Users = (function(){
     var userList = [];
 
     var generateUser = function() {
-        return faker.helpers.contextualCard();
+        return faker.helpers.createCard();
     };
 
     var setUserList = function() {
         for (var i = 0; i < 5; i++) {
-            userList.push(generateUser());
+            var user = generateUser();
+            user.favorite = (i % 3 === 0);
+            user.avatar = faker.image.avatar();
+            userList.push(user);
         }
     };
     setUserList();
