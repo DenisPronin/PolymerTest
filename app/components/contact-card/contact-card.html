@@ -13,7 +13,7 @@
                 <div flex></div>
                 <div class="controls">
                     <paper-icon-button icon="create" role="button" aria-label="edit"></paper-icon-button>
-                    <paper-icon-button icon="star" role="button" aria-label="favorite"></paper-icon-button>
+                    <paper-icon-button icon="star" role="button" aria-label="favorite" class="favorite {{ {active: contact.favorite} | tokenList }}" on-click="{{ toggleFavorite }}"></paper-icon-button>
                     <paper-icon-button icon="redo" role="button" aria-label="some action"></paper-icon-button>
                     <paper-icon-button icon="more-vert" role="button" aria-label="more"></paper-icon-button>
                 </div>
@@ -81,7 +81,19 @@
 
             updateContact: function(e, detail, sender) {
                 this.contact = detail.contact;
+            },
+
+            toggleFavorite: function() {
+                this.contact.favorite = !this.contact.favorite;
+                this.fire('core-signal', {
+                    name: "update-favorite",
+                    data: {
+                        contact: this.contact
+                    }
+                });
+                Users.updateUser(this.contact);
             }
+
         });
     </script>
 </polymer-element>

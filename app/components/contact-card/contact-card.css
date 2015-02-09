@@ -25,3 +25,7 @@
     font-size: 14px;
     margin-top: 3px;
 }
+
+.favorite.active {
+    color: #ffff00;
+}

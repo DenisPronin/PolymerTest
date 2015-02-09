@@ -14,21 +14,38 @@ var Users = (function(){
                 var user = generateUser();
                 user.favorite = (i % 5 === 0);
                 user.avatar = faker.image.avatar();
+                user.id = i;
                 userList.push(user);
             }
-            localStorage.setItem('userList', JSON.stringify(userList));
+            saveUsers();
         }
         else {
             userList = JSON.parse(savedUsers);
         }
     };
-    setUserList();
+
+    var updateUser = function(user) {
+        userList = userList.map(function(_user) {
+             if(_user.id === user.id) {
+                 user = _user;
+             }
+            return _user;
+        });
+        saveUsers();
+    };
+
+    var saveUsers = function() {
+        localStorage.setItem('userList', JSON.stringify(userList));
+    };
 
     var getUserList = function() {
         return userList;
     };
 
+    setUserList();
+
     return {
-        getUserList: getUserList
+        getUserList: getUserList,
+        updateUser: updateUser
     }
 })();

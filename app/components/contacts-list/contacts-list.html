@@ -1,4 +1,5 @@
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/core-signals/core-signals.html">
 <link rel="import" href="../../../bower_components/core-toolbar/core-toolbar.html">
 <link rel="import" href="../../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../../bower_components/paper-input/paper-input-decorator.html">
@@ -11,6 +12,7 @@
 <polymer-element name="contacts-list" vertical layout>
     <template>
         <link rel="stylesheet" href="contacts-list.css">
+        <core-signals on-core-signal-update-favorite="{{ updateFavorite }}"></core-signals>
         <core-toolbar>
             <paper-dropdown-menu>
                 <paper-dropdown class="dropdown">
@@ -57,9 +59,7 @@
 
     <script>
         Polymer('contacts-list', {
-            users: [],
             groups: {},
-
             filteredGroups: {},
             filterValue: '',
 
@@ -74,10 +74,8 @@
                     if(a.name > b.name) return 1;
                     return 0;
                 });
-                this.users = users;
                 this.groups = this.splitUsersByGroup(users);
                 this.filteredGroups = this.splitUsersByGroup(users);
-                console.log(this.groups);
             },
 
             splitUsersByGroup: function(users) {
@@ -155,6 +153,34 @@
                 this.setItemsInactive();
                 var li = e.currentTarget;
                 li.classList.add("active");
+            },
+
+            updateFavorite: function(e, detail, sender) {
+                var user = detail.contact;
+                var favId;
+                for (var j = 0; j < this.groups.length; j++) {
+                    if(this.groups[j].name === 'favorite') {
+                        favId = j;
+                    }
+                }
+                if (user.favorite) { // if favorite add to this group
+                    this.groups[favId].contacts.push(user);
+                    this.filteredGroups[favId].contacts.push(user);
+                }
+                else { // else remove from favorite group
+                    var findId;
+                    for (var i = 0; i < this.groups[0].contacts.length; i++) {
+                        var contact = this.groups[0].contacts[i];
+                        if (contact.id === user.id) {
+                            findId = i;
+                            break;
+                        }
+                    }
+                    if(findId != undefined) {
+                        this.groups[favId].contacts.splice(findId, 1);
+                        this.filteredGroups[favId].contacts.splice(findId, 1);
+                    }
+                }
             }
 
         });
