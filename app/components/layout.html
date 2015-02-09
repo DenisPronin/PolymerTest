@@ -19,8 +19,12 @@
             }
 
             core-toolbar {
-                background: #3486ab;
+                background: #526E9C;
                 color: white;
+            }
+
+            .drawer-panel{
+                background: #fff;
             }
 
             .main-panel {
@@ -28,24 +32,47 @@
             }
         </style>
 
-        <core-header-panel flex>
-            <core-toolbar class="short">
-                <paper-icon-button id="navicon" icon="menu" role="button" tabindex="0" aria-label="menu"></paper-icon-button>
-            </core-toolbar>
-            <div class="content">
-                <core-drawer-panel drawerWidth="30%">
-                    <div drawer class="drawer-panel">
-                        <contacts-list></contacts-list>
-                    </div>
-                    <div main class="main-panel">
-                        <contact-card></contact-card>
-                    </div>
-                </core-drawer-panel>
-            </div>
-        </core-header-panel>
+        <core-drawer-panel id="drawerPanel" drawerWidth="{{ drawerPanelWidth }}">
+            <core-header-panel drawer class="drawer-panel" >
+                <core-toolbar id="header">
+                    <paper-icon-button id="navicon" icon="menu" role="button" tabindex="0" aria-label="menu"></paper-icon-button>
+                </core-toolbar>
+                <contacts-list></contacts-list>
+            </core-header-panel>
+
+            <core-header-panel main class="main-panel">
+                <core-toolbar id="mainheader">
+                    <paper-icon-button id="navicon2" icon="menu" core-drawer-toggle></paper-icon-button>
+                </core-toolbar>
+                <div class="content">
+                    <contact-card></contact-card>
+                </div>
+            </core-header-panel>
+
+        </core-drawer-panel>
     </template>
 
     <script>
-        Polymer({});
+        Polymer({
+            drawerPanelWidth: '30%',
+
+            ready: function() {
+                var me = this;
+                window.onresize = function(event) {
+                    me.changeDrawerWidth();
+                };
+                me.changeDrawerWidth();
+            },
+
+            changeDrawerWidth: function() {
+                if(document.body.clientWidth < 800) {
+                    this.drawerPanelWidth = '50%';
+                }
+                else {
+                    this.drawerPanelWidth = '30%';
+                }
+            }
+
+        });
     </script>
 </polymer-element>
