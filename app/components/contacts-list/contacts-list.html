@@ -6,7 +6,7 @@
 <link rel="import" href="../../../bower_components/paper-dropdown/paper-dropdown.html">
 <link rel="import" href="../../../bower_components/core-menu/core-menu.html">
 <link rel="import" href="../../../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../avatar-icon/avatar-icon.html">
+<link rel="import" href="contact-item.html">
 
 <polymer-element name="contacts-list">
     <template>
@@ -36,11 +36,8 @@
                 <div class="col contact-group-menu">
                     <ul>
                         <template repeat="{{ user in groups.favoriteGroup }}">
-                            <li on-click="{{ selectContact }}">
-                                <paper-item label="{{ user.name }}" horizontal center layout>
-                                    <avatar-icon imgSrc="{{ user.avatar }}"></avatar-icon>
-                                    {{ user.name }}
-                                </paper-item>
+                            <li on-click="{{ selectItem }}">
+                                <contact-item contact="{{ user }}"></contact-item>
                             </li>
                         </template>
                     </ul>
@@ -54,11 +51,8 @@
                     <div class="col contact-group-menu">
                         <ul>
                             <template repeat="{{ user in group.contacts }}">
-                                <li on-click="{{ selectContact }}">
-                                    <paper-item label="{{ user.name }}" horizontal center layout>
-                                        <avatar-icon imgSrc="{{ user.avatar }}"></avatar-icon>
-                                        {{ user.name }}
-                                    </paper-item>
+                                <li on-click="{{ selectItem }}">
+                                    <contact-item contact="{{ user }}"></contact-item>
                                 </li>
                             </template>
                         </ul>
@@ -140,7 +134,7 @@
                 }
             },
 
-            selectContact: function(e) {
+            setItemsInactive: function() {
                 var menuList = this.$.contactsList.getElementsByClassName('contact-group-menu');
                 for (var i = 0; i < menuList.length; i++) {
                     var menu = menuList[i];
@@ -150,6 +144,10 @@
                         _li.classList.remove('active')
                     }
                 }
+            },
+
+            selectItem: function(e) {
+                this.setItemsInactive();
                 var li = e.currentTarget;
                 li.classList.add("active");
             }

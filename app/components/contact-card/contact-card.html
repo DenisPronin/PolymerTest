@@ -1,0 +1,20 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/core-signals/core-signals.html">
+
+<polymer-element name="contact-card" attributes="contact">
+    <template>
+        <link rel="stylesheet" href="contact-card.css">
+        <core-signals on-core-signal-update-contact="{{ updateContact }}"></core-signals>
+        {{ contact.name }}
+    </template>
+
+    <script>
+        Polymer({
+            contact: {},
+
+            updateContact: function(e, detail, sender) {
+                this.contact = detail.contact;
+            }
+        });
+    </script>
+</polymer-element>

@@ -10,7 +10,6 @@ var sources = {
     },
     templates: ['**/**/*.html']
 };
-var isWin = /^win/.test(process.platform);
 
 gulp.task('connect', function(){
     connect.server({

@@ -1,0 +1,27 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../avatar-icon/avatar-icon.html">
+
+<polymer-element name="contact-item" attributes="contact">
+    <template>
+        <paper-item label="{{ contact.name }}" horizontal center layout on-click="{{ selectContact }}">
+            <avatar-icon imgSrc="{{ contact.avatar }}"></avatar-icon>
+            {{ contact.name }}
+        </paper-item>
+
+    </template>
+
+    <script>
+        Polymer({
+            selectContact: function() {
+                this.fire('core-signal', {
+                    name: "update-contact",
+                    data: {
+                        contact: this.contact
+                    }
+                });
+
+            }
+        });
+    </script>
+</polymer-element>
