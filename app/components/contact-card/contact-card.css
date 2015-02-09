@@ -1,0 +1,27 @@
+.contact-group-info {
+    margin: 8px;
+}
+
+.group-container {
+    border-bottom: 1px solid #C9C9C9;
+}
+
+.group-container:last-child {
+    border-bottom: 0;
+}
+
+.contact-group-sign {
+    justify-content: center;
+    margin-top: 35px;
+    color: #8D8D8D;
+}
+
+.prop-container {
+    padding: 20px 0;
+}
+
+.bottom-label {
+    color: #8D8D8D;
+    font-size: 14px;
+    margin-top: 3px;
+}

@@ -1,16 +1,83 @@
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../../bower_components/core-signals/core-signals.html">
+<link rel="import" href="../../../bower_components/core-icons/communication-icons.html">
+<link rel="import" href="../../../bower_components/core-toolbar/core-toolbar.html">
+<link rel="import" href="../../../bower_components/paper-icon-button/paper-icon-button.html">
 
 <polymer-element name="contact-card" attributes="contact">
     <template>
         <link rel="stylesheet" href="contact-card.css">
         <core-signals on-core-signal-update-contact="{{ updateContact }}"></core-signals>
-        {{ contact.name }}
+        <template if="{{ contact }}">
+            <core-toolbar class="tall">
+                <div flex></div>
+                <div class="controls">
+                    <paper-icon-button icon="create" role="button" aria-label="edit"></paper-icon-button>
+                    <paper-icon-button icon="star" role="button" aria-label="favorite"></paper-icon-button>
+                    <paper-icon-button icon="redo" role="button" aria-label="some action"></paper-icon-button>
+                    <paper-icon-button icon="more-vert" role="button" aria-label="more"></paper-icon-button>
+                </div>
+                <div flex class="bottom indent">
+                    {{ contact.name }}
+                </div>
+            </core-toolbar>
+            <div id="info-container">
+                <div class="group-container phone-group" horizontal layout>
+                    <div class="contact-group-sign" flex one horizontal layout>
+                        <core-icon icon="communication:phone"></core-icon>
+                    </div>
+                    <div class="contact-group-info" flex five>
+                        <section>
+                            <div class="prop-container" horizontal layout>
+                                <div class="desription" flex self-start>
+                                    <div class="prop">{{ contact.phone }}</div>
+                                    <div class="bottom-label">Mobile</div>
+                                </div>
+                                <div class="controls" >
+                                    <paper-icon-button icon="communication:chat"></paper-icon-button>
+                                </div>
+                            </div>
+                            <div class="prop-container" horizontal layout>
+                                <div class="desription" flex self-start>
+                                    <span class="prop">{{ contact.phone }}</span>
+                                    <div flex class="bottom-label">Work</div>
+                                </div>
+                                <div class="controls">
+                                    <paper-icon-button icon="communication:chat"></paper-icon-button>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+                <div class="group-container phone-group" horizontal layout>
+                    <div class="contact-group-sign" flex one horizontal layout>
+                        <core-icon icon="communication:email"></core-icon>
+                    </div>
+                    <div class="contact-group-info" flex five>
+                        <section>
+                            <div class="prop-container" horizontal layout>
+                                <div class="desription" flex self-start>
+                                    <div class="prop">{{ contact.email }}</div>
+                                    <div class="bottom-label">Personal</div>
+                                </div>
+                            </div>
+                            <div class="prop-container">
+                                <div class="desription">
+                                    <span class="prop">{{ contact.email }}</span>
+                                    <div flex class="bottom-label">Work</div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </template>
+
     </template>
 
     <script>
         Polymer({
-            contact: {},
+            contact: null,
 
             updateContact: function(e, detail, sender) {
                 this.contact = detail.contact;
