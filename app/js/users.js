@@ -8,11 +8,18 @@ var Users = (function(){
     };
 
     var setUserList = function() {
-        for (var i = 0; i < 25; i++) {
-            var user = generateUser();
-            user.favorite = (i % 5 === 0);
-            user.avatar = faker.image.avatar();
-            userList.push(user);
+        var savedUsers = localStorage.getItem('userList');
+        if(!savedUsers) {
+            for (var i = 0; i < 15; i++) {
+                var user = generateUser();
+                user.favorite = (i % 5 === 0);
+                user.avatar = faker.image.avatar();
+                userList.push(user);
+            }
+            localStorage.setItem('userList', JSON.stringify(userList));
+        }
+        else {
+            userList = JSON.parse(savedUsers);
         }
     };
     setUserList();
