@@ -46,6 +46,6 @@ core-menu {
     border-bottom: 1px solid #C9C9C9;
 }
 
-.contact-group-menu li.active paper-item{
+.contact-group-menu li.active {
     background-color: #eaeaea;
 }

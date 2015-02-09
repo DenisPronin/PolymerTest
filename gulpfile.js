@@ -6,7 +6,7 @@ var sources = {
         dev: ['./app/**/*.js']
     },
     css: {
-        dev: ['**/**/*.css']
+        dev: ['**/*.css']
     },
     templates: ['**/**/*.html']
 };

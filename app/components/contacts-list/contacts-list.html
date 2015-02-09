@@ -20,44 +20,37 @@
                     </core-menu>
                 </paper-dropdown>
             </paper-dropdown-menu>
-        <span id="searchContainer" class="hidden" flex>
-            <paper-input-decorator>
-                <input type="text" is="core-input" id="contactFilter" on-input="{{ filterUsers }}" on-blur="{{ checkFilter }}" pattern="[0-9]*">
-            </paper-input-decorator>
-        </span>
+            <span id="searchContainer" class="hidden" flex>
+                <paper-input-decorator>
+                    <input type="text" is="core-input" id="contactFilter" on-blur="{{ checkFilter }}" pattern="[0-9]*" value="{{ filterValue }}" on-keyup="{{ filterUsers }}">
+                </paper-input-decorator>
+            </span>
             <paper-icon-button icon="search" role="button" tabindex="1" aria-label="search" on-click="{{ showSearch }}"></paper-icon-button>
             <paper-icon-button icon="more-vert" role="button" tabindex="2" aria-label="menu"></paper-icon-button>
         </core-toolbar>
         <div class="content" id="contactsList">
-            <div class="favorite-container contact-group flexbox">
-                <div class="col contact-group-name" horizontal layout>
-                    <core-icon icon="star" class="group-sign" flex></core-icon>
-                </div>
-                <div class="col contact-group-menu">
-                    <ul>
-                        <template repeat="{{ user in groups.favoriteGroup }}">
-                            <li on-click="{{ selectItem }}">
-                                <contact-item contact="{{ user }}"></contact-item>
-                            </li>
-                        </template>
-                    </ul>
-                </div>
-            </div>
-            <template repeat="{{ group in groups.all }}">
-                <div class="contact-group flexbox">
-                    <div class="col contact-group-name" horizontal layout>
-                        <span class="group-sign" flex>{{ group.name }}</span>
-                    </div>
-                    <div class="col contact-group-menu">
-                        <ul>
-                            <template repeat="{{ user in group.contacts }}">
-                                <li on-click="{{ selectItem }}">
-                                    <contact-item contact="{{ user }}"></contact-item>
-                                </li>
+            <template repeat="{{ group in filteredGroups }}">
+                <template if="{{ group.contacts.length > 0 }}">
+                    <div class="contact-group flexbox" >
+                        <div class="col contact-group-name" horizontal layout>
+                            <template if="{{ group.name === 'favorite' }}">
+                                <core-icon icon="star" class="group-sign" flex></core-icon>
                             </template>
-                        </ul>
+                            <template if="{{ group.name !== 'favorite' }}">
+                                <span class="group-sign" flex>{{ group.name }}</span>
+                            </template>
+                        </div>
+                        <div class="col contact-group-menu">
+                            <ul>
+                                <template repeat="{{ user in group.contacts }}">
+                                    <li on-click="{{ selectItem }}">
+                                        <contact-item contact="{{ user }}"></contact-item>
+                                    </li>
+                                </template>
+                            </ul>
+                        </div>
                     </div>
-                </div>
+                </template>
             </template>
         </div>
     </template>
@@ -66,6 +59,9 @@
         Polymer('contacts-list', {
             users: [],
             groups: {},
+
+            filteredGroups: {},
+            filterValue: '',
 
             ready: function() {
                 this.initUsers();
@@ -80,18 +76,23 @@
                 });
                 this.users = users;
                 this.groups = this.splitUsersByGroup(users);
-                console.log(this.users);
+                this.filteredGroups = this.splitUsersByGroup(users);
                 console.log(this.groups);
             },
 
             splitUsersByGroup: function(users) {
-                var groups = {};
+                var groups = [];
 
-                groups.favoriteGroup = users.filter(function(_user) {
+                var favoriteContacts = users.filter(function(_user) {
                     return _user.favorite;
                 });
 
-                groups.all = [];
+                groups[0] = {
+                    name: 'favorite',
+                    contacts: favoriteContacts
+                };
+
+
                 var letterGroups = {};
                 for (var i = 0; i < users.length; i++) {
                     var user = users[i];
@@ -100,7 +101,7 @@
                     letterGroups[firstChar].push(user);
                 }
                 for (var key in letterGroups) {
-                    groups.all.push({
+                    groups.push({
                         name: key.toUpperCase(),
                         contacts: letterGroups[key]
                     })
@@ -128,9 +129,13 @@
             },
 
             filterUsers: function() {
-                var checked = this.checkFilter();
-                if(!checked) {
-                    return false;
+                var term = this.$.contactFilter.value;
+                for (var i = 0; i < this.groups.length; i++) {
+                    var group = this.groups[i];
+                    var filterGroup = this.filteredGroups[i];
+                    filterGroup.contacts = group.contacts.filter(function (contact) {
+                        return contact.name.toLowerCase().indexOf(term.toLowerCase()) !== -1
+                    });
                 }
             },
 
