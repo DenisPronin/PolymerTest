@@ -8,7 +8,7 @@
 <link rel="import" href="../../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="contact-item.html">
 
-<polymer-element name="contacts-list">
+<polymer-element name="contacts-list" vertical layout>
     <template>
         <link rel="stylesheet" href="contacts-list.css">
         <core-toolbar>
@@ -28,7 +28,7 @@
             <paper-icon-button icon="search" role="button" tabindex="1" aria-label="search" on-click="{{ showSearch }}"></paper-icon-button>
             <paper-icon-button icon="more-vert" role="button" tabindex="2" aria-label="menu"></paper-icon-button>
         </core-toolbar>
-        <div class="content" id="contactsList">
+        <div class="content" id="contactsList" flex>
             <template repeat="{{ group in filteredGroups }}">
                 <template if="{{ group.contacts.length > 0 }}">
                     <div class="contact-group flexbox" >

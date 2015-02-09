@@ -8,9 +8,9 @@ var Users = (function(){
     };
 
     var setUserList = function() {
-        for (var i = 0; i < 5; i++) {
+        for (var i = 0; i < 25; i++) {
             var user = generateUser();
-            user.favorite = (i % 3 === 0);
+            user.favorite = (i % 5 === 0);
             user.avatar = faker.image.avatar();
             userList.push(user);
         }
