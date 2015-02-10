@@ -27,7 +27,7 @@ var Users = (function(){
     var updateUser = function(user) {
         userList = userList.map(function(_user) {
              if(_user.id === user.id) {
-                 user = _user;
+                 _user = user;
              }
             return _user;
         });
