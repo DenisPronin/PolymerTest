@@ -60,3 +60,8 @@ core-menu {
     right: 0;
     width: 150px;
 }
+
+core-toolbar {
+    background-color: #CFD8DC!important;
+    color: #000000!important;
+}
