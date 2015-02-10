@@ -5,6 +5,7 @@
 <link rel="import" href="../../../bower_components/paper-input/paper-input-decorator.html">
 <link rel="import" href="../../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../../bower_components/paper-dropdown/paper-dropdown.html">
+<link rel="import" href="../../../bower_components/paper-menu-button/paper-menu-button.html">
 <link rel="import" href="../../../bower_components/core-menu/core-menu.html">
 <link rel="import" href="../../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="contact-item.html">
@@ -28,7 +29,15 @@
                 </paper-input-decorator>
             </span>
             <paper-icon-button icon="search" role="button" tabindex="1" aria-label="search" on-click="{{ showSearch }}"></paper-icon-button>
-            <paper-icon-button icon="more-vert" role="button" tabindex="2" aria-label="menu"></paper-icon-button>
+            <paper-menu-button class="side-vert-menu">
+                <paper-icon-button icon="more-vert" role="button" tabindex="2" aria-label="menu"></paper-icon-button>
+                <paper-dropdown class="dropdown" transition="">
+                    <core-menu class="menu">
+                        <paper-item>Some action</paper-item>
+                        <paper-item>Some action</paper-item>
+                    </core-menu>
+                </paper-dropdown>
+            </paper-menu-button>
         </core-toolbar>
         <div class="content" id="contactsList" flex>
             <template repeat="{{ group in filteredGroups }}">

@@ -2,6 +2,10 @@
 <link rel="import" href="../../../bower_components/core-signals/core-signals.html">
 <link rel="import" href="../../../bower_components/core-icons/communication-icons.html">
 <link rel="import" href="../../../bower_components/core-toolbar/core-toolbar.html">
+<link rel="import" href="../../../bower_components/core-menu/core-menu.html">
+<link rel="import" href="../../../bower_components/paper-dropdown/paper-dropdown.html">
+<link rel="import" href="../../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../../bower_components/paper-menu-button/paper-menu-button.html">
 <link rel="import" href="../../../bower_components/paper-icon-button/paper-icon-button.html">
 
 <polymer-element name="contact-card" attributes="contact">
@@ -15,7 +19,15 @@
                     <paper-icon-button icon="create" role="button" aria-label="edit"></paper-icon-button>
                     <paper-icon-button icon="star" role="button" aria-label="favorite" class="favorite {{ {active: contact.favorite} | tokenList }}" on-click="{{ toggleFavorite }}"></paper-icon-button>
                     <paper-icon-button icon="redo" role="button" aria-label="some action"></paper-icon-button>
-                    <paper-icon-button icon="more-vert" role="button" aria-label="more"></paper-icon-button>
+                    <paper-menu-button class="side-vert-menu">
+                        <paper-icon-button icon="more-vert" role="button" tabindex="2" aria-label="menu"></paper-icon-button>
+                        <paper-dropdown class="dropdown" transition="">
+                            <core-menu class="menu">
+                                <paper-item>Some action</paper-item>
+                                <paper-item>Some action</paper-item>
+                            </core-menu>
+                        </paper-dropdown>
+                    </paper-menu-button>
                 </div>
                 <div flex class="bottom indent">
                     {{ contact.name }}

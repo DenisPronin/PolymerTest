@@ -29,3 +29,14 @@
 .favorite.active {
     color: #ffff00;
 }
+
+core-menu {
+    margin: 0;
+}
+
+.side-vert-menu paper-dropdown {
+    position: absolute;
+    top: 45px;
+    right: 0;
+    width: 150px;
+}
