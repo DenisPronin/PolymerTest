@@ -45,7 +45,7 @@
                         <div class="col contact-group-menu">
                             <ul>
                                 <template repeat="{{ user in group.contacts }}">
-                                    <li on-click="{{ selectItem }}">
+                                    <li on-click="{{ selectItem }}" data-user-id="{{ user.id }}">
                                         <contact-item contact="{{ user }}"></contact-item>
                                     </li>
                                 </template>
@@ -59,12 +59,17 @@
 
     <script>
         Polymer('contacts-list', {
+            users: [],
             groups: {},
             filteredGroups: {},
             filterValue: '',
 
             ready: function() {
                 this.initUsers();
+            },
+
+            domReady: function() {
+                this.selectDefaultUser();
             },
 
             initUsers: function() {
@@ -74,6 +79,7 @@
                     if(a.name > b.name) return 1;
                     return 0;
                 });
+                this.users = users;
                 this.groups = this.splitUsersByGroup(users);
                 this.filteredGroups = this.splitUsersByGroup(users);
             },
@@ -196,8 +202,30 @@
                         });
                     }
                 }
-            }
+            },
 
+            selectDefaultUser: function() {
+                var menuList = this.$.contactsList.getElementsByClassName('contact-group-menu');
+                if(menuList.length > 0) {
+                    var liList = menuList[0].getElementsByTagName('li');
+                    if(liList.length > 0) {
+                        var li = liList[0];
+                        var userId = li.getAttribute('data-user-id');
+                        var user = this.users.filter(function(_user) {
+                            return _user.id === parseInt(userId);
+                        });
+                        if(user.length > 0) {
+                            this.fire('core-signal', {
+                                name: "update-contact",
+                                data: {
+                                    contact: user[0]
+                                }
+                            });
+                            li.click();
+                        }
+                    }
+                }
+            }
         });
     </script>
 </polymer-element>
