@@ -35,7 +35,7 @@
         <core-drawer-panel id="drawerPanel" drawerWidth="{{ drawerPanelWidth }}">
             <core-header-panel drawer class="drawer-panel" >
                 <core-toolbar id="header">
-                    <paper-icon-button id="navicon" icon="menu" role="button" tabindex="0" aria-label="menu"></paper-icon-button>
+                    <paper-icon-button id="navicon" icon="menu" role="button" tabindex="0" aria-label="menu" core-drawer-toggle></paper-icon-button>
                 </core-toolbar>
                 <contacts-list></contacts-list>
             </core-header-panel>
@@ -65,8 +65,11 @@
             },
 
             changeDrawerWidth: function() {
-                if(document.body.clientWidth < 800) {
+                if(document.body.clientWidth < 800 && document.body.clientWidth > 400) {
                     this.drawerPanelWidth = '50%';
+                }
+                else if(document.body.clientWidth < 400) {
+                    this.drawerPanelWidth = '90%';
                 }
                 else {
                     this.drawerPanelWidth = '30%';

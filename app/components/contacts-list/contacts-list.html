@@ -16,9 +16,9 @@
         <core-toolbar>
             <paper-dropdown-menu>
                 <paper-dropdown class="dropdown">
-                    <core-menu class="menu" selected="all">
+                    <core-menu class="menu" selected="0" on-core-select="{{ filterByGroup }}">
                         <paper-item name="all">All</paper-item>
-                        <paper-item name="favorites">Favorites</paper-item>
+                        <paper-item name="favorite">Favorites</paper-item>
                     </core-menu>
                 </paper-dropdown>
             </paper-dropdown-menu>
@@ -179,6 +179,21 @@
                     if(findId != undefined) {
                         this.groups[favId].contacts.splice(findId, 1);
                         this.filteredGroups[favId].contacts.splice(findId, 1);
+                    }
+                }
+            },
+
+            filterByGroup: function(e, detail) {
+                if (detail.isSelected) {
+                    var selectedItem = detail.item;
+                    var name = selectedItem.getAttribute('name');
+                    if(name === 'all') {
+                        this.filteredGroups = this.groups;
+                    }
+                    else {
+                        this.filteredGroups = this.filteredGroups.filter(function(group) {
+                             return group.name === name;
+                        });
                     }
                 }
             }
