@@ -146,9 +146,11 @@
                 for (var i = 0; i < this.groups.length; i++) {
                     var group = this.groups[i];
                     var filterGroup = this.filteredGroups[i];
-                    filterGroup.contacts = group.contacts.filter(function (contact) {
-                        return contact.name.toLowerCase().indexOf(term.toLowerCase()) !== -1
-                    });
+                    if(filterGroup) {
+                        filterGroup.contacts = group.contacts.filter(function (contact) {
+                            return contact.name.toLowerCase().indexOf(term.toLowerCase()) !== -1
+                        });
+                    }
                 }
             },
 
@@ -176,6 +178,7 @@
                 for (var j = 0; j < this.groups.length; j++) {
                     if(this.groups[j].name === 'favorite') {
                         favId = j;
+                        break;
                     }
                 }
                 if (user.favorite) { // if favorite add to this group
@@ -203,7 +206,7 @@
                     var selectedItem = detail.item;
                     var name = selectedItem.getAttribute('name');
                     if(name === 'all') {
-                        this.filteredGroups = this.groups;
+                        this.filteredGroups = (JSON.parse(JSON.stringify(this.groups)));
                     }
                     else {
                         this.filteredGroups = this.filteredGroups.filter(function(group) {
